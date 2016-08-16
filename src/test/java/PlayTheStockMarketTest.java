@@ -1,10 +1,10 @@
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class PlayTheStockMarketTest {
     }
 
     @Test
-    public void sample2() {
+    public void sample2() throws IOException {
         assertBestDealFound(getNumbersFromFile(
                         "src/test/resources/StockMarketInput.txt"),
                 Arrays.asList(8.03, 9.34));
@@ -51,14 +51,11 @@ public class PlayTheStockMarketTest {
         Assert.assertEquals(expectedResult, new PlayTheStockMarket(input).play());
     }
 
-    private static List<Double> getNumbersFromFile(String filePath) {
-        List<Double> numbers = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File(filePath))) {
-            while (scanner.hasNext()) {
-                numbers.add(scanner.nextDouble());
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    private static List<Double> getNumbersFromFile(String filePath) throws IOException {
+        List<Double> numbers = new LinkedList<>();
+        Scanner scanner = new Scanner(Paths.get(filePath));
+        while (scanner.hasNext()) {
+            numbers.add(scanner.nextDouble());
         }
         return numbers;
     }
